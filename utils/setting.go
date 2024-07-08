@@ -7,9 +7,11 @@ import (
 )
 
 var (
-	AppMode  string
-	HttpPort string
-	JwtKey   string
+	AppMode        string
+	HttpPort       string
+	JwtKey         string
+	InvitationCode string
+	FilePath       string
 
 	DbHost     string
 	DbPort     string
@@ -31,6 +33,8 @@ func LoadServer(file *ini.File) {
 	AppMode = file.Section("server").Key("AppMode").MustString("debug")
 	HttpPort = file.Section("server").Key("HttpPort").MustString(":3000")
 	JwtKey = file.Section("server").Key("JwtKey").MustString("89js82js72")
+	InvitationCode = file.Section("server").Key("InvitationCode").String()
+	FilePath = file.Section("server").Key("InvitationCode").MustString("files/")
 }
 
 func LoadData(file *ini.File) {

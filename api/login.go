@@ -12,6 +12,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
+// Login 登录函数
 func Login(c *gin.Context) {
 	var formData model.User
 	_ = c.ShouldBindJSON(&formData)
@@ -57,6 +58,7 @@ func setToken(c *gin.Context, user model.User) {
 		Username: user.Username,
 		RegisteredClaims: jwt.RegisteredClaims{
 			NotBefore: jwt.NewNumericDate(time.Now()),
+			// 七天有效期
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(7 * 24 * time.Hour)),
 			Issuer:    "project",
 		},

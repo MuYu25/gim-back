@@ -28,10 +28,10 @@ type MyClaims struct {
 
 // 定义错误
 var (
-	TokenExpired     = errors.New("token已过期,请重新登录。")
-	TokenNotValidYet = errors.New("token无效,请重新登录。")
-	TokenMalformed   = errors.New("token不正确,请重新登录。")
-	TokenInvalid     = errors.New("这不是一个token,请重新登录。")
+	ErrTokenExpired     = errors.New("token已过期,请重新登录。")
+	ErrTokenNotValidYet = errors.New("token无效,请重新登录。")
+	ErrTokenMalformed   = errors.New("token不正确,请重新登录。")
+	ErrTokenInvalid     = errors.New("这不是一个token,请重新登录。")
 )
 
 // CreateToken 生成token
@@ -41,21 +41,27 @@ func (j *JWT) CreateToken(claims MyClaims) (string, error) {
 }
 
 // ParserToken 解析token
-func (j *JWT) ParserToken(tokenString string) error {
+func (j *JWT) ParserToken(tokenString string) (*jwt.Token, error) {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		return j.JwtKey, nil
 	})
+	return token, err
+}
+
+// verifyToken 验证token
+func (j *JWT) verifyToken(tokenString string) error {
+	token, err := j.ParserToken(tokenString)
 	// 验证token
 	if token.Valid {
 		return nil
 	} else if errors.Is(err, jwt.ErrTokenMalformed) {
-		return TokenMalformed
+		return ErrTokenMalformed
 	} else if errors.Is(err, jwt.ErrTokenExpired) || errors.Is(err, jwt.ErrTokenNotValidYet) {
-		return TokenExpired
+		return ErrTokenExpired
 	} else if errors.Is(err, jwt.ErrTokenSignatureInvalid) {
-		return TokenInvalid
+		return ErrTokenInvalid
 	} else {
-		return TokenNotValidYet
+		return ErrTokenNotValidYet
 	}
 }
 
@@ -77,9 +83,9 @@ func JwtToken() gin.HandlerFunc {
 
 		j := NewJWT()
 		// 解析token
-		err := j.ParserToken(tokenHeader)
+		err := j.verifyToken(tokenHeader)
 		if err != nil {
-			if errors.Is(err, TokenExpired) {
+			if errors.Is(err, ErrTokenExpired) {
 				c.JSON(http.StatusOK, gin.H{
 					"status":  errmsg.ERROR,
 					"message": "token授权已过期,请重新登录",

@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// 获取活跃日期，待完成，未使用真正的数据
 func GetHomeData(c *gin.Context) {
 	queryParam := c.Query("date")
 	dateInt, err := strconv.Atoi(queryParam)

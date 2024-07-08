@@ -11,6 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// 添加数据
 func AddData(c *gin.Context) {
 	var data model.UserData
 	_ = c.ShouldBindJSON(&data)

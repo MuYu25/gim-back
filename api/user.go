@@ -1,9 +1,9 @@
 package api
 
 import (
-	"fmt"
 	"net/http"
 	"project/model"
+	"project/utils"
 	"project/utils/errmsg"
 	"strconv"
 
@@ -14,11 +14,14 @@ import (
 
 // AddUser 添加用户
 func AddUser(c *gin.Context) {
-	var data model.User
+	type UserRequest struct {
+		model.User
+		InviteCode string `json:"invite_code" validate:"required" label:"邀请码"`
+	}
+	var data UserRequest
 	var msg string
 	var validCode int
 	_ = c.ShouldBindJSON(&data)
-	fmt.Println(data)
 	msg, validCode = validator.Validate(&data)
 	if validCode != errmsg.SUCCESS {
 		c.JSON(
@@ -31,9 +34,30 @@ func AddUser(c *gin.Context) {
 		return
 	}
 
+	// 写死的邀请码
+	if data.InviteCode == "" {
+		c.JSON(
+			http.StatusOK, gin.H{
+				"status":  500,
+				"message": "邀请码不能为空",
+			},
+		)
+		c.Abort()
+		return
+	} else if data.InviteCode != utils.InvitationCode {
+		c.JSON(
+			http.StatusOK, gin.H{
+				"status":  500,
+				"message": "邀请码错误",
+			},
+		)
+		c.Abort()
+		return
+	}
+
 	code := model.CheckUser(data.Username)
 	if code == errmsg.SUCCESS {
-		model.CreateUser(&data)
+		model.CreateUser(&data.User)
 	}
 
 	c.JSON(

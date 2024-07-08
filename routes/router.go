@@ -28,6 +28,7 @@ func InitRouter() {
 		// auth.DELETE("user/:id", api.DeleteUser)
 		auth.GET("home", api.GetHomeData)
 		auth.GET("data", api.GetUserData)
+		auth.POST("download", api.DownloadData)
 	}
 
 	router := r.Group("api")
@@ -41,7 +42,6 @@ func InitRouter() {
 		// router.POST("loginfront", api.LoginFront)
 
 		router.POST("upload", api.AddData)
-
 	}
 	_ = r.Run(utils.HttpPort)
 }
