@@ -1,0 +1,29 @@
+name: 使用Docker打包编译Go项目
+
+on:
+  push:
+    branches: [ "main" ]
+  # pull_request:
+  #   branches: [ "main" ]
+
+jobs:
+  Go-build:
+    name: Go-Build工作 
+    runs-on: ubuntu-latest
+    steps:
+    - name: 读取仓库内容
+      uses: actions/checkout@v4
+
+    - name: 设置Go版本
+      uses: action/set-up-go@v2
+      with:
+        go-version: '^1.19'
+
+    - name: 安装依赖并构建项目
+      run: |
+        go mod download
+        go build -o main
+      
+
+    # - name: Build the Docker image
+    #   run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
