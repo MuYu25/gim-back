@@ -25,7 +25,7 @@ func AddUser(c *gin.Context) {
 	msg, validCode = validator.Validate(&data)
 	if validCode != errmsg.SUCCESS {
 		c.JSON(
-			http.StatusOK, gin.H{
+			http.StatusInternalServerError, gin.H{
 				"status":  validCode,
 				"message": msg,
 			},
@@ -46,7 +46,7 @@ func AddUser(c *gin.Context) {
 		return
 	} else if data.InviteCode != utils.InvitationCode {
 		c.JSON(
-			http.StatusOK, gin.H{
+			http.StatusInternalServerError, gin.H{
 				"status":  500,
 				"message": "邀请码错误",
 			},

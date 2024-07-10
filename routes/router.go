@@ -29,6 +29,9 @@ func InitRouter() {
 		auth.GET("home", api.GetHomeData)
 		auth.GET("data", api.GetUserData)
 		auth.POST("download", api.DownloadData)
+		auth.GET("download", api.DownloadById)
+		auth.GET("downloadhistory", api.GetDownloadHistory)
+		auth.PUT("downloadhistory", api.UpdateDownloadHistory)
 	}
 
 	router := r.Group("api")

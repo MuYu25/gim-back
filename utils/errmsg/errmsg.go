@@ -13,6 +13,10 @@ const (
 	ERROR_TOKEN_WRONG      = 1006
 	ERROR_TOKEN_TYPE_WRONG = 1007
 	ERROR_USER_NO_RIGHT    = 1008
+
+	// 文件模块的错误
+	ERROR_FILE_EXIST     = 2001
+	ERROR_FILE_NOT_EXIST = 2002
 )
 
 var codeMsg = map[int]string{
@@ -25,6 +29,9 @@ var codeMsg = map[int]string{
 	ERROR_TOKEN_RUNTIME:    "TOKEN已过期,请重新登陆",
 	ERROR_TOKEN_WRONG:      "TOKEN不正确,请重新登陆",
 	ERROR_TOKEN_TYPE_WRONG: "TOKEN格式错误,请重新登陆",
+
+	ERROR_FILE_EXIST:     "文件已存在",
+	ERROR_FILE_NOT_EXIST: "文件不存在",
 }
 
 func GetErrMsg(code int) string {

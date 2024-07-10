@@ -14,7 +14,7 @@ func GetHomeData(c *gin.Context) {
 	queryParam := c.Query("date")
 	dateInt, err := strconv.Atoi(queryParam)
 	if queryParam == "" || err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
+		c.JSON(http.StatusInternalServerError, gin.H{
 			"status":  errmsg.ERROR,
 			"message": errmsg.GetErrMsg(errmsg.ERROR),
 		})

@@ -1,12 +1,12 @@
 package api
 
 import (
-	"fmt"
 	"net/http"
+	"project/middleware"
 	"project/model"
 	"project/utils/errmsg"
 	"project/utils/validator"
-	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -39,22 +39,25 @@ func AddData(c *gin.Context) {
 
 // 查询用户的数据 /api/data
 func GetUserData(c *gin.Context) {
-	_conditions := make(map[string][]interface{})
-	queryParams := c.Request.URL.Query()
-	fmt.Println(queryParams)
-	for param, conditions := range queryParams {
-		for _, condition := range conditions {
-			if len(strings.TrimSpace(condition)) > 0 {
-				_conditions[param] = append(_conditions[param], condition)
-			}
-		}
+	var conditions model.UserData
+	// conditions := make(model.UserData)
+	conditions = model.UserData{
+		Cc:       c.Query("cc"),
+		Type:     c.Query("type"),
+		Channel:  c.Query("channel"),
+		State:    c.Query("state"),
+		ToUserId: int(middleware.NewJWT().GetTokenValues(c.GetHeader("Authorization"), "uid").(float64)),
 	}
-	data, total := model.GetUserData(_conditions)
+	if c.Query("CreatedAt") != "" {
+		conditions.CreatedAt, _ = time.Parse("2006-1-2", c.Query("CreatedAt"))
+	}
+	results, total := model.GetUserData(conditions)
+
 	c.JSON(
 		http.StatusOK, gin.H{
 			"status":  errmsg.SUCCESS,
 			"message": errmsg.GetErrMsg(errmsg.SUCCESS),
-			"data":    data,
+			"data":    results,
 			"total":   total,
 		},
 	)

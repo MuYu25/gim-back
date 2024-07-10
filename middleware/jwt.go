@@ -34,6 +34,13 @@ var (
 	ErrTokenInvalid     = errors.New("这不是一个token,请重新登录。")
 )
 
+// 提供token以及需要查询的字段，返回token中相对应的值
+func (j *JWT) GetTokenValues(tokenString string, key string) interface{} {
+	token, _ := j.ParserToken(tokenString)
+	claims := token.Claims.(jwt.MapClaims)
+	return claims[key]
+}
+
 // CreateToken 生成token
 func (j *JWT) CreateToken(claims MyClaims) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)

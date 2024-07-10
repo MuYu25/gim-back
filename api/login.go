@@ -24,7 +24,7 @@ func Login(c *gin.Context) {
 	if code == errmsg.SUCCESS {
 		setToken(c, formData)
 	} else {
-		c.JSON(http.StatusOK, gin.H{
+		c.JSON(http.StatusInternalServerError, gin.H{
 			"status":  code,
 			"data":    formData.Username,
 			"id":      formData.ID,
@@ -67,7 +67,7 @@ func setToken(c *gin.Context, user model.User) {
 	token, err := j.CreateToken(claims)
 
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
+		c.JSON(http.StatusInternalServerError, gin.H{
 			"status":  errmsg.ERROR,
 			"message": errmsg.GetErrMsg(errmsg.ERROR),
 			"token":   token,
@@ -79,7 +79,7 @@ func setToken(c *gin.Context, user model.User) {
 		"status":  200,
 		"data":    user.Username,
 		"id":      user.ID,
-		"message": errmsg.GetErrMsg(200),
+		"message": errmsg.GetErrMsg(errmsg.SUCCESS),
 		"token":   token,
 	})
 }
