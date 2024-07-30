@@ -12,7 +12,6 @@ require (
 	github.com/gorilla/context v1.1.2 // indirect
 	github.com/gorilla/securecookie v1.1.2 // indirect
 	github.com/gorilla/sessions v1.2.2 // indirect
-	golang.org/dl v0.0.0-20240716205829-396652c1bbd0 // indirect
 )
 
 require (
