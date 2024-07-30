@@ -1,6 +1,6 @@
 module project
 
-go 1.22.5
+go 1.19
 
 require gorm.io/gorm v1.25.10
 
@@ -12,6 +12,7 @@ require (
 	github.com/gorilla/context v1.1.2 // indirect
 	github.com/gorilla/securecookie v1.1.2 // indirect
 	github.com/gorilla/sessions v1.2.2 // indirect
+	golang.org/dl v0.0.0-20240716205829-396652c1bbd0 // indirect
 )
 
 require (
@@ -51,9 +52,9 @@ require (
 	github.com/ugorji/go/codec v1.2.12 // indirect
 	github.com/wejectchen/ginblog v0.0.0-20240127154842-2cb3038682fa
 	golang.org/x/arch v0.8.0 // indirect
-	golang.org/x/crypto v0.24.0 // indirect
+	golang.org/x/crypto v0.25.0 // indirect
 	golang.org/x/net v0.26.0 // indirect
-	golang.org/x/sys v0.21.0 // indirect
+	golang.org/x/sys v0.22.0 // indirect
 	golang.org/x/text v0.16.0 // indirect
 	google.golang.org/protobuf v1.34.2 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
