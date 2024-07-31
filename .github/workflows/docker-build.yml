@@ -29,16 +29,10 @@ jobs:
       uses: docker/setup-buildx-action@v3
 
     - name: Build the Docker image
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
-        context: .
-        file: Dockerfile
         push: true
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/template:latest
-        platforms: |
-          linux/amd64
-          linux/arm64/v7
-          linux/arm64/v8
       
 
     # - name: Build the Docker image
